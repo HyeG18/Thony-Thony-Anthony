@@ -74,6 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audio.volume = 0.3;
     
+    audio.play().then(() => {
+        audioIcon.textContent = '🎵';
+        audioText.textContent = 'Pausar';
+    }).catch(() => {});
+    
     audioToggle.addEventListener('click', () => {
         if (audio.paused) {
             audio.play().catch(e => console.log('Audio play error:', e));
@@ -163,4 +168,22 @@ document.addEventListener('DOMContentLoaded', () => {
             audioText.textContent = 'Pausar';
         }
     }, { once: true });
+
+    const letter = document.querySelector('.letter');
+    let letterAnimated = false;
+
+    function checkLetterInView() {
+        if (letterAnimated) return;
+        
+        const letterRect = letter.getBoundingClientRect();
+        const isVisible = letterRect.top < window.innerHeight * 0.8;
+        
+        if (isVisible) {
+            letter.classList.add('unfolded');
+            letterAnimated = true;
+        }
+    }
+
+    window.addEventListener('scroll', checkLetterInView);
+    window.addEventListener('load', checkLetterInView);
 });
